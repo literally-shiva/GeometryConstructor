@@ -4,6 +4,7 @@ namespace GeometryConstructor.Models.Figures
 {
     internal class GeometricSquare : GeometricQuadrangle
     {
+        public Point Center { get; set; }
         public double SideLength;
 
         public GeometricSquare(Point center, double sideLength) : base(

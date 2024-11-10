@@ -6,6 +6,7 @@ namespace GeometryConstructor.Models.Figures
 {
     public class GeometricEllipse : GeometricFigure
     {
+        public Point Center { get; set; }
         public double XSemiAxis { get; set; }
         public double YSemiAxis { get; set; }
         public int Smoothness { get; set; } = 36;

@@ -2,72 +2,89 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Media;
+using Avalonia.VisualTree;
 using DynamicData;
 using GeometryConstructor.Models.Figures;
+using GeometryConstructor.Views;
 using ReactiveUI;
 using System.Reactive;
+using System.Threading.Tasks;
 
 namespace GeometryConstructor.ViewModels;
 
 public class MainViewModel : ViewModelBase
 {
-    public ReactiveCommand<Canvas, Unit> DrawEllipseCommand { get; }
-    public ReactiveCommand<Canvas, Unit> DrawCircleCommand { get; }
-    public ReactiveCommand<Canvas, Unit> DrawTriangleCommand { get; }
-    public ReactiveCommand<Canvas, Unit> DrawQuadrangleCommand { get; }
-    public ReactiveCommand<Canvas, Unit> DrawSquareCommand { get; }
-    public ReactiveCommand<Canvas, Unit> ClearCommand { get; }
+    public ReactiveCommand<MainView, Unit> DrawEllipseCommand { get; }
+    public ReactiveCommand<MainView, Unit> DrawCircleCommand { get; }
+    public ReactiveCommand<MainView, Unit> DrawTriangleCommand { get; }
+    public ReactiveCommand<MainView, Unit> DrawQuadrangleCommand { get; }
+    public ReactiveCommand<MainView, Unit> DrawSquareCommand { get; }
+    public ReactiveCommand<MainView, Unit> ClearCommand { get; }
 
     public MainViewModel()
     {
-        DrawEllipseCommand = ReactiveCommand.Create<Canvas>(DrawEllipse);
-        DrawCircleCommand = ReactiveCommand.Create<Canvas>(DrawCircle);
-        DrawTriangleCommand = ReactiveCommand.Create<Canvas>(DrawTriangle);
-        DrawQuadrangleCommand = ReactiveCommand.Create<Canvas>(DrawQuadrangle);
-        DrawSquareCommand = ReactiveCommand.Create<Canvas>(DrawSquare);
-        ClearCommand = ReactiveCommand.Create<Canvas>(Clear);
+        DrawEllipseCommand = ReactiveCommand.CreateFromTask<MainView>(DrawEllipseAsync);
+        DrawCircleCommand = ReactiveCommand.Create<MainView>(DrawCircle);
+        DrawTriangleCommand = ReactiveCommand.Create<MainView>(DrawTriangle);
+        DrawQuadrangleCommand = ReactiveCommand.Create<MainView>(DrawQuadrangle);
+        DrawSquareCommand = ReactiveCommand.Create<MainView>(DrawSquare);
+        ClearCommand = ReactiveCommand.Create<MainView>(Clear);
     }
 
-    public void DrawEllipse(Canvas mainCanvas)
+    public async Task DrawEllipseAsync(MainView mainView)
     {
-        GeometricEllipse ellipse = new(new Point(150, 100), 100, 50);
-        AddGeometricFigureToCanvas(ellipse, mainCanvas);
+        var ownerWindow = mainView.GetVisualRoot();
+        if (ownerWindow != null)
+        {
+            var dialogWindow = new DrawEllipseWindow() { DataContext = new DrawEllipseViewModel() };
+            var ellipsParams = await dialogWindow.ShowDialog<double[]>((Window)ownerWindow);
+
+            if (ellipsParams != null)
+            {
+                GeometricEllipse ellipse = new(
+                    new Point(ellipsParams[0],
+                    ellipsParams[1]),
+                    ellipsParams[2],
+                    ellipsParams[3]);
+                AddGeometricFigureToCanvas(ellipse, mainView.MainCanvas);
+            }
+        }
     }
 
-    public void DrawCircle(Canvas mainCanvas)
+    public void DrawCircle(MainView mainView)
     {
         GeometricCircle circle = new(new Point(350, 100), 50);
-        AddGeometricFigureToCanvas(circle, mainCanvas);
+        AddGeometricFigureToCanvas(circle, mainView.MainCanvas);
     }
 
-    public void DrawTriangle(Canvas mainCanvas)
+    public void DrawTriangle(MainView mainView)
     {
         GeometricTriangle triangle = new(new Point(200, 200), new Point(300, 200), new Point(200, 300));
-        AddGeometricFigureToCanvas(triangle, mainCanvas);
+        AddGeometricFigureToCanvas(triangle, mainView.MainCanvas);
     }
 
-    public void DrawQuadrangle(Canvas mainCanvas)
+    public void DrawQuadrangle(MainView mainView)
     {
         GeometricQuadrangle quadrangle = new (new Point(350, 250), new Point(550, 200), new Point(550, 400), new Point(400, 450));
-        AddGeometricFigureToCanvas(quadrangle, mainCanvas);
+        AddGeometricFigureToCanvas(quadrangle, mainView.MainCanvas);
     }
 
-    public void DrawSquare(Canvas mainCanvas)
+    public void DrawSquare(MainView mainView)
     {
         GeometricSquare square = new(new Point(250, 500), 100);
-        AddGeometricFigureToCanvas(square, mainCanvas);
+        AddGeometricFigureToCanvas(square, mainView.MainCanvas);
     }
 
-    public void Clear (Canvas mainCanvas)
+    public void Clear (MainView mainView)
     {
-        mainCanvas.Children.Clear();
+        mainView.MainCanvas.Children.Clear();
     }
 
     public void AddGeometricFigureToCanvas(GeometricFigure figure, Canvas canvas)
     {
         Polyline polyline = new Polyline()
         {
-            StrokeThickness = 1,
+            StrokeThickness = 3,
             Stroke = Brushes.White
         };
 

@@ -1,5 +1,4 @@
 ﻿using Avalonia;
-using System.Collections.Generic;
 
 namespace GeometryConstructor.Models.Figures
 {

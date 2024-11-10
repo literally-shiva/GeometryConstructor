@@ -5,22 +5,23 @@
              xmlns:vm="clr-namespace:GeometryConstructor.ViewModels"
              mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
              x:Class="GeometryConstructor.Views.MainView"
-             x:DataType="vm:MainViewModel">
+             x:DataType="vm:MainViewModel"
+			 Name="UserControl">
   <Design.DataContext>
     <!-- This only sets the DataContext for the previewer in an IDE,
          to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
     <vm:MainViewModel />
   </Design.DataContext>
 
-	<DockPanel Background="#2C2F33">
-		<Menu DockPanel.Dock="Top" Background="#23272A" >
-			<MenuItem Header="Очистить" Command="{Binding ClearCommand}" CommandParameter="{Binding #MainCanvas}"/>
-			<MenuItem Header="Эллипс" Command="{Binding DrawEllipseCommand}" CommandParameter="{Binding #MainCanvas}"/>
-			<MenuItem Header="Круг" Command="{Binding DrawCircleCommand}" CommandParameter="{Binding #MainCanvas}"/>
-			<MenuItem Header="Треугольник" Command="{Binding DrawTriangleCommand}" CommandParameter="{Binding #MainCanvas}"/>
-			<MenuItem Header="Четырёхугольник" Command="{Binding DrawQuadrangleCommand}" CommandParameter="{Binding #MainCanvas}"/>
-			<MenuItem Header="Квадрат" Command="{Binding DrawSquareCommand}" CommandParameter="{Binding #MainCanvas}"/>
+	<DockPanel>
+		<Menu ZIndex="1" DockPanel.Dock="Top" Background="#23272A" >
+			<MenuItem Header="Очистить" Command="{Binding ClearCommand}" CommandParameter="{Binding #UserControl}"/>
+			<MenuItem Header="Эллипс" Command="{Binding DrawEllipseCommand}" CommandParameter="{Binding #UserControl}"/>
+			<MenuItem Header="Круг" Command="{Binding DrawCircleCommand}" CommandParameter="{Binding #UserControl}"/>
+			<MenuItem Header="Треугольник" Command="{Binding DrawTriangleCommand}" CommandParameter="{Binding #UserControl}"/>
+			<MenuItem Header="Четырёхугольник" Command="{Binding DrawQuadrangleCommand}" CommandParameter="{Binding #UserControl}"/>
+			<MenuItem Header="Квадрат" Command="{Binding DrawSquareCommand}" CommandParameter="{Binding #UserControl}"/>
 		</Menu>
-		<Canvas Name="MainCanvas"/>
+		<Canvas Name="MainCanvas" Background="#2C2F33"/>
 	</DockPanel>
 </UserControl>
