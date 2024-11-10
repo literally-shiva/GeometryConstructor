@@ -15,6 +15,7 @@
 
 	<DockPanel>
 		<Menu ZIndex="1" DockPanel.Dock="Top" Background="#23272A" >
+			<MenuItem Header="Справка" Command="{Binding HelpCommand}"/>
 			<MenuItem Header="Очистить" Command="{Binding ClearCommand}" CommandParameter="{Binding #UserControl}"/>
 			<MenuItem Header="Эллипс" Command="{Binding DrawEllipseCommand}" CommandParameter="{Binding #UserControl}"/>
 			<MenuItem Header="Круг" Command="{Binding DrawCircleCommand}" CommandParameter="{Binding #UserControl}"/>
