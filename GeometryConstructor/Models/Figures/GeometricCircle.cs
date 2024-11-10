@@ -6,7 +6,7 @@ namespace GeometryConstructor.Models.Figures
     {
         public double Radius { get; set; }
 
-        public GeometricCircle(Point center, int radius) : base (center, radius / 2, radius / 2)
+        public GeometricCircle(Point center, double radius) : base (center, radius / 2, radius / 2)
         {
             Radius = radius;
             Points = GetPoints();
