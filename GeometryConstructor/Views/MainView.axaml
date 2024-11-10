@@ -22,6 +22,7 @@
 			<MenuItem Header="Треугольник" Command="{Binding DrawTriangleCommand}" CommandParameter="{Binding #UserControl}"/>
 			<MenuItem Header="Четырёхугольник" Command="{Binding DrawQuadrangleCommand}" CommandParameter="{Binding #UserControl}"/>
 			<MenuItem Header="Квадрат" Command="{Binding DrawSquareCommand}" CommandParameter="{Binding #UserControl}"/>
+			<MenuItem Header="Многоугольник" Command="{Binding DrawPolygonCommand}" CommandParameter="{Binding #UserControl}"/>
 		</Menu>
 		<Canvas Name="MainCanvas" Background="#2C2F33"/>
 	</DockPanel>

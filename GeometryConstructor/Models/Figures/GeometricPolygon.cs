@@ -9,10 +9,12 @@ namespace GeometryConstructor.Models.Figures
         public GeometricPolygon(params Point[] points)
         {
             Points = points.ToList();
+            Points.Add(points[0]);
         }
         public GeometricPolygon(List<Point> points)
         {
             Points = points;
+            Points.Add(points[0]);
         }
     }
 }

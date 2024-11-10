@@ -9,6 +9,7 @@ using GeometryConstructor.Views;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 using ReactiveUI;
+using System.Collections.Generic;
 using System.Reactive;
 using System.Threading.Tasks;
 
@@ -21,6 +22,7 @@ public class MainViewModel : ViewModelBase
     public ReactiveCommand<MainView, Unit> DrawTriangleCommand { get; }
     public ReactiveCommand<MainView, Unit> DrawQuadrangleCommand { get; }
     public ReactiveCommand<MainView, Unit> DrawSquareCommand { get; }
+    public ReactiveCommand<MainView, Unit> DrawPolygonCommand { get; }
     public ReactiveCommand<MainView, Unit> ClearCommand { get; }
     public ReactiveCommand<Unit, Unit> HelpCommand { get; }
 
@@ -31,6 +33,7 @@ public class MainViewModel : ViewModelBase
         DrawTriangleCommand = ReactiveCommand.CreateFromTask<MainView>(DrawTriangleAsync);
         DrawQuadrangleCommand = ReactiveCommand.CreateFromTask<MainView>(DrawQuadrangleAsync);
         DrawSquareCommand = ReactiveCommand.CreateFromTask<MainView>(DrawSquareAsync);
+        DrawPolygonCommand = ReactiveCommand.CreateFromTask<MainView>(DrawPolygon);
         ClearCommand = ReactiveCommand.Create<MainView>(Clear);
         HelpCommand = ReactiveCommand.CreateFromTask(HelpAsync);
     }
@@ -122,6 +125,21 @@ public class MainViewModel : ViewModelBase
             {
                 GeometricSquare square = new(new Point(squareParams[0], squareParams[1]), squareParams[2]);
                 AddGeometricFigureToCanvas(square, mainView.MainCanvas);
+            }
+        }
+    }
+    public async Task DrawPolygon(MainView mainView)
+    {
+        var ownerWindow = mainView.GetVisualRoot();
+        if (ownerWindow != null)
+        {
+            var dialogWindow = new DrawPolygonWindow() { DataContext = new DrawPolygonViewModel() };
+            var polygonPoints = await dialogWindow.ShowDialog<List<Point>>((Window)ownerWindow);
+
+            if (polygonPoints != null)
+            {
+                GeometricPolygon polygon = new(polygonPoints);
+                AddGeometricFigureToCanvas(polygon, mainView.MainCanvas);
             }
         }
     }
