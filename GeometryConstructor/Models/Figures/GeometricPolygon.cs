@@ -6,6 +6,10 @@ namespace GeometryConstructor.Models.Figures
 {
     public class GeometricPolygon : GeometricFigure
     {
+        public GeometricPolygon()
+        {
+
+        }
         public GeometricPolygon(params Point[] points)
         {
             Points = points.ToList();
