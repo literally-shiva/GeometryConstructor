@@ -30,7 +30,7 @@ public class MainViewModel : ViewModelBase
         DrawCircleCommand = ReactiveCommand.CreateFromTask<MainView>(DrawCircleAsync);
         DrawTriangleCommand = ReactiveCommand.CreateFromTask<MainView>(DrawTriangleAsync);
         DrawQuadrangleCommand = ReactiveCommand.CreateFromTask<MainView>(DrawQuadrangleAsync);
-        DrawSquareCommand = ReactiveCommand.Create<MainView>(DrawSquare);
+        DrawSquareCommand = ReactiveCommand.CreateFromTask<MainView>(DrawSquareAsync);
         ClearCommand = ReactiveCommand.Create<MainView>(Clear);
         HelpCommand = ReactiveCommand.CreateFromTask(HelpAsync);
     }
@@ -110,10 +110,20 @@ public class MainViewModel : ViewModelBase
         }
     }
 
-    public void DrawSquare(MainView mainView)
+    public async Task DrawSquareAsync(MainView mainView)
     {
-        GeometricSquare square = new(new Point(250, 500), 100);
-        AddGeometricFigureToCanvas(square, mainView.MainCanvas);
+        var ownerWindow = mainView.GetVisualRoot();
+        if (ownerWindow != null)
+        {
+            var dialogWindow = new DrawSquareWindow() { DataContext = new DrawSquareViewModel() };
+            var squareParams = await dialogWindow.ShowDialog<double[]>((Window)ownerWindow);
+
+            if (squareParams != null)
+            {
+                GeometricSquare square = new(new Point(squareParams[0], squareParams[1]), squareParams[2]);
+                AddGeometricFigureToCanvas(square, mainView.MainCanvas);
+            }
+        }
     }
 
     public void Clear(MainView mainView)
