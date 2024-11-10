@@ -1,0 +1,36 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="270"
+        x:Class="GeometryConstructor.DrawQuadrangleWindow"
+		Title="Установка вершин четырёхугольника"
+		Width="480"
+		Height="270"
+		CanResize="False"
+		Name="Window">
+
+	<DockPanel Background="#2C2F33">
+		<Label DockPanel.Dock="Top" HorizontalAlignment="Center" Margin="20 20 20 0">Рисование четырёхугольника</Label>
+		<Grid DockPanel.Dock="Top" ColumnDefinitions="4*, *, 4*, *, 4* *, 4*" RowDefinitions="*, *, *, *, *" Margin="20">
+			<Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="7" HorizontalAlignment="Center">Координаты вершин четырёхугольника</Label>
+			<Label Grid.Column="0" Grid.Row="1">X:</Label>
+			<TextBox Name="FirstVertexX" Grid.Column="0" Grid.Row="2" Background="#23272A"/>
+			<Label Grid.Column="0" Grid.Row="3">Y:</Label>
+			<TextBox Name="FirstVertexY" Grid.Column="0" Grid.Row="4" Background="#23272A"/>
+			<Label Grid.Column="2" Grid.Row="1">X:</Label>
+			<TextBox Name="SecondVertexX" Grid.Column="2" Grid.Row="2" Background="#23272A"/>
+			<Label Grid.Column="2" Grid.Row="3">Y:</Label>
+			<TextBox Name="SecondVertexY" Grid.Column="2" Grid.Row="4" Background="#23272A"/>
+			<Label Grid.Column="4" Grid.Row="1">X:</Label>
+			<TextBox Name="ThirdVertexX" Grid.Column="4" Grid.Row="2" Background="#23272A"/>
+			<Label Grid.Column="4" Grid.Row="3">Y:</Label>
+			<TextBox Name="ThirdVertexY" Grid.Column="4" Grid.Row="4" Background="#23272A"/>
+			<Label Grid.Column="6" Grid.Row="1">X:</Label>
+			<TextBox Name="FourthVertexX" Grid.Column="6" Grid.Row="2" Background="#23272A"/>
+			<Label Grid.Column="6" Grid.Row="3">Y:</Label>
+			<TextBox Name="FourthVertexY" Grid.Column="6" Grid.Row="4" Background="#23272A"/>
+		</Grid>
+		<Button HorizontalAlignment="Center" Background="#23272A" Command="{Binding GetQuadrangleVerticesCommand}" CommandParameter="{Binding #Window}">Нарисовать</Button>
+	</DockPanel>
+</Window>

@@ -29,7 +29,7 @@ public class MainViewModel : ViewModelBase
         DrawEllipseCommand = ReactiveCommand.CreateFromTask<MainView>(DrawEllipseAsync);
         DrawCircleCommand = ReactiveCommand.CreateFromTask<MainView>(DrawCircleAsync);
         DrawTriangleCommand = ReactiveCommand.CreateFromTask<MainView>(DrawTriangleAsync);
-        DrawQuadrangleCommand = ReactiveCommand.Create<MainView>(DrawQuadrangle);
+        DrawQuadrangleCommand = ReactiveCommand.CreateFromTask<MainView>(DrawQuadrangleAsync);
         DrawSquareCommand = ReactiveCommand.Create<MainView>(DrawSquare);
         ClearCommand = ReactiveCommand.Create<MainView>(Clear);
         HelpCommand = ReactiveCommand.CreateFromTask(HelpAsync);
@@ -90,10 +90,24 @@ public class MainViewModel : ViewModelBase
         }
     }
 
-    public void DrawQuadrangle(MainView mainView)
+    public async Task DrawQuadrangleAsync(MainView mainView)
     {
-        GeometricQuadrangle quadrangle = new(new Point(350, 250), new Point(550, 200), new Point(550, 400), new Point(400, 450));
-        AddGeometricFigureToCanvas(quadrangle, mainView.MainCanvas);
+        var ownerWindow = mainView.GetVisualRoot();
+        if (ownerWindow != null)
+        {
+            var dialogWindow = new DrawQuadrangleWindow() { DataContext = new DrawQuadrangleViewModel() };
+            var quadrangleVertices = await dialogWindow.ShowDialog<double[]>((Window)ownerWindow);
+
+            if (quadrangleVertices != null)
+            {
+                GeometricQuadrangle quadrangle = new(
+                    new Point(quadrangleVertices[0], quadrangleVertices[1]),
+                    new Point(quadrangleVertices[2], quadrangleVertices[3]),
+                    new Point(quadrangleVertices[4], quadrangleVertices[5]),
+                    new Point(quadrangleVertices[6], quadrangleVertices[7]));
+                AddGeometricFigureToCanvas(quadrangle, mainView.MainCanvas);
+            }
+        }
     }
 
     public void DrawSquare(MainView mainView)
@@ -111,7 +125,7 @@ public class MainViewModel : ViewModelBase
     {
         Polyline polyline = new Polyline()
         {
-            StrokeThickness = 5,
+            StrokeThickness = 1,
             Stroke = Brushes.White,
             StrokeJoin = PenLineJoin.Miter,
             StrokeLineCap = PenLineCap.Round
