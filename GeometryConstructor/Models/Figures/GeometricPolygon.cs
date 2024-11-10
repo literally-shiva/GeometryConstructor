@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace GeometryConstructor.Models.Figures
 {
-    public abstract class GeometricPolygon : GeometricFigure
+    public class GeometricPolygon : GeometricFigure
     {
         public GeometricPolygon(params Point[] points)
         {

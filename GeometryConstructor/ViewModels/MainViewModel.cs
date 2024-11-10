@@ -151,7 +151,7 @@ public class MainViewModel : ViewModelBase
         var box = MessageBoxManager
           .GetMessageBoxStandard("Справка", "Координатная ось начинается в левом верхнем углу и возрастает в направлении правого нижнего",
               ButtonEnum.Ok);
-
-        var result = await box.ShowAsync();
+        
+        await box.ShowAsync();
     }
 }

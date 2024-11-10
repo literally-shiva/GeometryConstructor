@@ -1,5 +1,8 @@
-﻿using ReactiveUI;
+﻿using MsBox.Avalonia.Enums;
+using MsBox.Avalonia;
+using ReactiveUI;
 using System.Reactive;
+using System.Threading.Tasks;
 
 namespace GeometryConstructor.ViewModels
 {
@@ -9,19 +12,30 @@ namespace GeometryConstructor.ViewModels
 
         public DrawEllipseViewModel()
         {
-            GetEllipseParamsCommand = ReactiveCommand.Create<DrawEllipseWindow>(GetEllipseParams);
+            GetEllipseParamsCommand = ReactiveCommand.CreateFromTask<DrawEllipseWindow>(GetEllipseParamsAsync);
         }
 
-        void GetEllipseParams(DrawEllipseWindow drawEllipseWindow)
+        async Task GetEllipseParamsAsync(DrawEllipseWindow drawEllipseWindow)
         {
             double xCenter = double.TryParse(drawEllipseWindow.XCenter.Text, out xCenter) ? xCenter : 0;
             double yCenter = double.TryParse(drawEllipseWindow.YCenter.Text, out yCenter) ? yCenter : 0;
             double xSemiAxis = double.TryParse(drawEllipseWindow.XSemiAxis.Text, out xSemiAxis) ? xSemiAxis : 0;
             double ySemiAxis = double.TryParse(drawEllipseWindow.YSemiAxis.Text, out ySemiAxis) ? ySemiAxis : 0;
 
-            double[] ellipseParams = [xCenter, yCenter, xSemiAxis, ySemiAxis];
+            if (xSemiAxis > 0 && ySemiAxis > 0)
+            {
+                double[] ellipseParams = [xCenter, yCenter, xSemiAxis, ySemiAxis];
 
-            drawEllipseWindow.Close(ellipseParams);
+                drawEllipseWindow.Close(ellipseParams);
+            }
+            else
+            {
+                var box = MessageBoxManager
+                    .GetMessageBoxStandard("Ошибка", "Введено неверное значение полуоси",
+                    ButtonEnum.Ok);
+
+                await box.ShowAsync();
+            }
         }
     }
 }

@@ -19,7 +19,7 @@ namespace GeometryConstructor.Models.Figures
             Points = GetPoints();
         }
 
-        public virtual List<Point> GetPoints()
+        protected virtual List<Point> GetPoints()
         {
             List<Point> points = new List<Point>();
 
